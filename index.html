@@ -42,6 +42,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
     <!-- jsPDF -->
     <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <!-- html2canvas for HTML to PDF conversion -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
     <style>
       :root {
@@ -70,14 +72,20 @@
         padding: 10px 16px;
         font-weight: 700;
         letter-spacing: -0.01em;
-        transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+        transition: transform 160ms ease, box-shadow 160ms ease,
+          filter 160ms ease;
         border: 1px solid transparent;
       }
       .btn:hover {
         transform: translateY(-1px);
       }
       .btn-primary {
-        background: radial-gradient(120% 120% at 20% 20%, #a5f3fc 0%, #22d3ee 45%, #16a34a 100%);
+        background: radial-gradient(
+          120% 120% at 20% 20%,
+          #a5f3fc 0%,
+          #22d3ee 45%,
+          #16a34a 100%
+        );
         color: #031123;
         box-shadow: 0 10px 35px rgba(34, 211, 238, 0.25);
       }
@@ -155,6 +163,14 @@
 
         <!-- 다른 서비스 보기: 기본 포함 -->
         <div class="flex gap-2">
+          <button
+            id="btnHtmlToPdf"
+            class="btn btn-outline"
+            type="button"
+            title="현재 페이지를 PDF로 저장"
+          >
+            페이지 PDF 저장 📄
+          </button>
           <a
             class="btn btn-outline"
             href="https://funnyfunny.cloud/"
@@ -189,12 +205,18 @@
             id="dropzone"
             class="mt-4 rounded-2xl border border-white/15 bg-white/5 p-5"
           >
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div
+              class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+            >
               <div>
                 <div class="font-semibold text-white">여기에 드래그&드롭</div>
-                <div class="muted small mt-1">또는 파일 선택 버튼을 눌러주세요.</div>
+                <div class="muted small mt-1">
+                  또는 파일 선택 버튼을 눌러주세요.
+                </div>
               </div>
-              <label class="btn btn-primary relative overflow-hidden cursor-pointer shadow-lg shadow-cyan-500/15">
+              <label
+                class="btn btn-primary relative overflow-hidden cursor-pointer shadow-lg shadow-cyan-500/15"
+              >
                 <input
                   id="fileInput"
                   type="file"
@@ -337,11 +359,7 @@
               <label
                 class="mt-3 flex items-center gap-2 rounded-xl px-3 py-2 bg-white/5 border border-white/10 cursor-pointer"
               >
-                <input
-                  id="keepSize"
-                  type="checkbox"
-                  class="accent-green-500"
-                />
+                <input id="keepSize" type="checkbox" class="accent-green-500" />
                 <div>
                   <div>원본 크기 그대로 붙이기</div>
                   <div class="muted small">
@@ -547,6 +565,94 @@
               🔒 이 페이지는 기본적으로
               <b class="text-white">브라우저 안에서</b> 처리합니다.
               (대용량/초고해상도는 느릴 수 있어요.)
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HTML to PDF Section -->
+      <section class="mt-6 glass rounded-3xl p-5 ringy">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <h2 class="text-lg font-bold">HTML → PDF 변환</h2>
+            <p class="muted small mt-1">
+              HTML 파일을 업로드하면 PDF로 변환해 다운로드할 수 있어요.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-4 grid lg:grid-cols-2 gap-4">
+          <div>
+            <div
+              id="htmlDropzone"
+              class="rounded-2xl border border-white/15 bg-white/5 p-5"
+            >
+              <div
+                class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+              >
+                <div>
+                  <div class="font-semibold text-white">
+                    HTML 파일 드래그&드롭
+                  </div>
+                  <div class="muted small mt-1">
+                    또는 파일 선택 버튼을 눌러주세요.
+                  </div>
+                </div>
+                <label
+                  class="btn btn-primary relative overflow-hidden cursor-pointer shadow-lg shadow-cyan-500/15"
+                >
+                  <input
+                    id="htmlFileInput"
+                    type="file"
+                    class="absolute inset-0 opacity-0 cursor-pointer"
+                    accept=".html,.htm,text/html"
+                    aria-label="HTML 파일 선택"
+                  />
+                  <span class="font-semibold">HTML 파일 선택</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="font-bold">업로드된 HTML</h3>
+                <button
+                  id="btnClearHtml"
+                  class="btn btn-ghost btn-sm"
+                  type="button"
+                  style="display: none"
+                >
+                  비우기
+                </button>
+              </div>
+              <div id="htmlFileName" class="muted small"></div>
+            </div>
+
+            <div class="mt-4">
+              <button
+                id="btnConvertHtmlToPdf"
+                class="btn btn-primary w-full shadow-lg shadow-emerald-400/25"
+                type="button"
+                disabled
+              >
+                PDF로 변환하기
+              </button>
+              <div id="htmlStatus" class="mt-2 muted small"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="chip rounded-2xl p-4">
+              <div class="font-semibold mb-2">미리보기</div>
+              <div
+                id="htmlPreview"
+                class="rounded-xl border border-white/10 bg-black/30 p-3"
+                style="min-height: 300px; max-height: 600px; overflow: auto"
+              >
+                <div class="muted small text-center py-8">
+                  HTML 파일을 업로드하면 여기에 미리보기가 표시됩니다.
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -852,7 +958,8 @@
           if (outType === "pdf") {
             // For PDF, we don't render all pages; show page count expectation.
             const mode = getPdfMode();
-            infoPagesEl.textContent = mode === "one" ? String(items.length) : "1";
+            infoPagesEl.textContent =
+              mode === "one" ? String(items.length) : "1";
             // Show rough size as sum of original file sizes (very rough)
             const approx = items.reduce((a, it) => a + (it.file?.size || 0), 0);
             infoSizeEl.textContent = `~${fmtBytes(approx)}`;
@@ -1291,6 +1398,300 @@
       document
         .querySelectorAll('input[name="pdfMode"]')
         .forEach((r) => r.addEventListener("change", preview));
+
+      // HTML to PDF conversion (current page)
+      async function convertHtmlToPdf() {
+        try {
+          if (!window.html2canvas || !window.jspdf) {
+            setStatus("PDF 변환 라이브러리를 불러올 수 없어요.");
+            return;
+          }
+
+          setStatus("PDF 변환 중... (페이지가 길면 시간이 걸릴 수 있어요)");
+          infoStateEl.textContent = "PDF 변환중";
+
+          // html2canvas로 페이지를 캔버스로 변환
+          const canvas = await html2canvas(document.body, {
+            scale: 2, // 고해상도
+            useCORS: true,
+            logging: false,
+            backgroundColor: "#060913",
+            windowWidth: document.body.scrollWidth,
+            windowHeight: document.body.scrollHeight,
+          });
+
+          const imgData = canvas.toDataURL("image/png");
+          const { jsPDF } = window.jspdf;
+
+          // PDF 생성 (A4 크기, 가로 방향)
+          const pdf = new jsPDF({
+            orientation:
+              canvas.width > canvas.height ? "landscape" : "portrait",
+            unit: "px",
+            format: [canvas.width, canvas.height],
+          });
+
+          // 이미지를 PDF에 추가
+          pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+
+          // PDF 다운로드
+          pdf.save("page.pdf");
+          setStatus("PDF 다운로드 완료!", true);
+          infoStateEl.textContent = "대기";
+        } catch (e) {
+          console.error(e);
+          setStatus(
+            "PDF 변환 중 오류가 발생했어요: " +
+              (e?.message || "알 수 없는 오류")
+          );
+          infoStateEl.textContent = "오류";
+        }
+      }
+
+      // HTML to PDF 버튼 이벤트 (current page)
+      $("btnHtmlToPdf")?.addEventListener("click", convertHtmlToPdf);
+
+      // HTML file to PDF conversion
+      let uploadedHtmlContent = null;
+      let uploadedHtmlFileName = null;
+      let htmlIframe = null;
+
+      const htmlFileInput = $("htmlFileInput");
+      const htmlDropzone = $("htmlDropzone");
+      const htmlPreview = $("htmlPreview");
+      const htmlFileName = $("htmlFileName");
+      const btnClearHtml = $("btnClearHtml");
+      const btnConvertHtmlToPdf = $("btnConvertHtmlToPdf");
+      const htmlStatus = $("htmlStatus");
+
+      function setHtmlStatus(msg, good = false) {
+        htmlStatus.innerHTML = msg ? (good ? `✅ ${msg}` : `ℹ️ ${msg}`) : "";
+      }
+
+      async function loadHtmlFile(file) {
+        try {
+          if (!file || !file.name.match(/\.(html|htm)$/i)) {
+            setHtmlStatus("HTML 파일만 업로드할 수 있어요.");
+            return;
+          }
+
+          setHtmlStatus("HTML 파일 읽는 중...");
+          const text = await file.text();
+          uploadedHtmlContent = text;
+          uploadedHtmlFileName = file.name;
+
+          // 미리보기 iframe 생성
+          if (htmlIframe) {
+            htmlIframe.remove();
+          }
+          htmlIframe = document.createElement("iframe");
+          // 실제 브라우저 뷰포트 크기로 설정 (일반적인 데스크톱 크기)
+          htmlIframe.style.width = "1920px";
+          htmlIframe.style.height = "1080px";
+          htmlIframe.style.border = "none";
+          htmlIframe.style.borderRadius = "8px";
+          htmlIframe.style.backgroundColor = "#ffffff";
+          htmlIframe.style.transform = "scale(0.3)"; // 미리보기는 축소해서 보여줌
+          htmlIframe.style.transformOrigin = "top left";
+          htmlPreview.style.overflow = "auto";
+          htmlPreview.style.maxHeight = "600px";
+          htmlPreview.innerHTML = "";
+          htmlPreview.appendChild(htmlIframe);
+
+          // iframe에 HTML 내용 쓰기
+          htmlIframe.onload = () => {
+            // iframe 내부의 뷰포트 크기를 실제 브라우저처럼 설정
+            const iframeDoc =
+              htmlIframe.contentDocument || htmlIframe.contentWindow.document;
+            const iframeWindow = htmlIframe.contentWindow;
+
+            // 실제 콘텐츠 크기에 맞춰 iframe 크기 조정
+            setTimeout(() => {
+              const contentWidth = Math.max(
+                iframeDoc.body.scrollWidth || 1920,
+                iframeWindow.innerWidth || 1920
+              );
+              const contentHeight = Math.max(
+                iframeDoc.body.scrollHeight || 1080,
+                iframeWindow.innerHeight || 1080
+              );
+
+              htmlIframe.style.width = contentWidth + "px";
+              htmlIframe.style.height = contentHeight + "px";
+            }, 100);
+
+            setHtmlStatus("HTML 파일 로드 완료!", true);
+            btnConvertHtmlToPdf.disabled = false;
+          };
+
+          htmlIframe.srcdoc = text;
+          htmlFileName.textContent = file.name;
+          btnClearHtml.style.display = "block";
+        } catch (e) {
+          console.error(e);
+          setHtmlStatus("HTML 파일을 읽을 수 없어요: " + e.message);
+        }
+      }
+
+      function clearHtmlFile() {
+        uploadedHtmlContent = null;
+        uploadedHtmlFileName = null;
+        if (htmlIframe) {
+          htmlIframe.remove();
+          htmlIframe = null;
+        }
+        htmlPreview.innerHTML =
+          '<div class="muted small text-center py-8">HTML 파일을 업로드하면 여기에 미리보기가 표시됩니다.</div>';
+        htmlFileName.textContent = "";
+        btnClearHtml.style.display = "none";
+        btnConvertHtmlToPdf.disabled = true;
+        setHtmlStatus("");
+      }
+
+      async function convertHtmlFileToPdf() {
+        try {
+          if (!uploadedHtmlContent || !htmlIframe) {
+            setHtmlStatus("먼저 HTML 파일을 업로드해주세요.");
+            return;
+          }
+
+          if (!window.html2canvas || !window.jspdf) {
+            setHtmlStatus("PDF 변환 라이브러리를 불러올 수 없어요.");
+            return;
+          }
+
+          setHtmlStatus("PDF 변환 중... (페이지가 길면 시간이 걸릴 수 있어요)");
+          btnConvertHtmlToPdf.disabled = true;
+
+          // iframe의 내용을 캡처
+          const iframeDoc =
+            htmlIframe.contentDocument || htmlIframe.contentWindow.document;
+          const iframeBody = iframeDoc.body;
+          const iframeWindow = htmlIframe.contentWindow;
+
+          // 실제 뷰포트 크기 가져오기 (iframe 내부의 실제 렌더링 크기)
+          // scrollWidth/Height는 전체 콘텐츠 크기, innerWidth/Height는 뷰포트 크기
+          const contentWidth = Math.max(
+            iframeBody.scrollWidth || 1920,
+            iframeWindow.innerWidth || 1920
+          );
+          const contentHeight = Math.max(
+            iframeBody.scrollHeight || 1080,
+            iframeWindow.innerHeight || 1080
+          );
+
+          // html2canvas로 iframe 내용을 캔버스로 변환 (고해상도로 선명하게)
+          const scale = 2; // 고해상도로 선명하게
+          const canvas = await html2canvas(iframeBody, {
+            scale: scale, // 고해상도로 선명하게
+            useCORS: true,
+            allowTaint: false,
+            logging: false,
+            backgroundColor: "#ffffff",
+            width: contentWidth,
+            height: contentHeight,
+            windowWidth: contentWidth,
+            windowHeight: contentHeight,
+            x: 0,
+            y: 0,
+            removeContainer: false,
+            imageTimeout: 15000,
+            onclone: (clonedDoc) => {
+              // 클론된 문서에서 스타일 보정 (버튼이 틀어지지 않도록)
+              const clonedBody = clonedDoc.body;
+              if (clonedBody) {
+                clonedBody.style.transform = "none";
+                clonedBody.style.transformOrigin = "top left";
+                // 모든 요소의 transform 제거 (버튼 등이 정확하게 렌더링되도록)
+                const allElements = clonedBody.querySelectorAll("*");
+                allElements.forEach((el) => {
+                  if (el.style && el.style.transform) {
+                    el.style.transform = "none";
+                  }
+                });
+              }
+            },
+          });
+
+          const imgData = canvas.toDataURL("image/png", 1.0);
+          const { jsPDF } = window.jspdf;
+
+          // PDF 생성 - 픽셀을 mm로 변환 (96 DPI 기준: 1px = 0.264583mm)
+          // scale을 고려하여 실제 크기 계산
+          const pxToMm = 0.264583;
+          const actualWidth = canvas.width / scale;
+          const actualHeight = canvas.height / scale;
+          const pdfWidth = actualWidth * pxToMm;
+          const pdfHeight = actualHeight * pxToMm;
+
+          // 방향을 정확하게 결정 (가로/세로 비율 기준)
+          const isLandscape = actualWidth > actualHeight;
+
+          const pdf = new jsPDF({
+            orientation: isLandscape ? "landscape" : "portrait",
+            unit: "mm",
+            format: [pdfWidth, pdfHeight],
+            compress: true,
+          });
+
+          // 이미지를 PDF에 추가 (정확한 크기와 방향 유지)
+          pdf.addImage(
+            imgData,
+            "PNG",
+            0,
+            0,
+            pdfWidth,
+            pdfHeight,
+            undefined,
+            "FAST"
+          );
+
+          // 파일명 생성
+          const pdfFileName =
+            uploadedHtmlFileName.replace(/\.(html|htm)$/i, "") + ".pdf";
+
+          // PDF 다운로드
+          pdf.save(pdfFileName);
+          setHtmlStatus("PDF 다운로드 완료!", true);
+          btnConvertHtmlToPdf.disabled = false;
+        } catch (e) {
+          console.error(e);
+          setHtmlStatus(
+            "PDF 변환 중 오류가 발생했어요: " +
+              (e?.message || "알 수 없는 오류")
+          );
+          btnConvertHtmlToPdf.disabled = false;
+        }
+      }
+
+      // HTML file upload events
+      ["dragenter", "dragover"].forEach((ev) =>
+        htmlDropzone.addEventListener(ev, (e) => {
+          e.preventDefault();
+          htmlDropzone.classList.add("drop-active");
+        })
+      );
+      ["dragleave", "drop"].forEach((ev) =>
+        htmlDropzone.addEventListener(ev, (e) => {
+          e.preventDefault();
+          htmlDropzone.classList.remove("drop-active");
+        })
+      );
+      htmlDropzone.addEventListener("drop", (e) => {
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+          loadHtmlFile(files[0]);
+        }
+      });
+
+      htmlFileInput.addEventListener("change", (e) => {
+        if (e.target.files.length > 0) {
+          loadHtmlFile(e.target.files[0]);
+        }
+      });
+
+      btnClearHtml.addEventListener("click", clearHtmlFile);
+      btnConvertHtmlToPdf.addEventListener("click", convertHtmlFileToPdf);
 
       // init
       updateQualityUI();
