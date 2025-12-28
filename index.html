@@ -163,14 +163,6 @@
 
         <!-- 다른 서비스 보기: 기본 포함 -->
         <div class="flex gap-2">
-          <button
-            id="btnHtmlToPdf"
-            class="btn btn-outline"
-            type="button"
-            title="현재 페이지를 PDF로 저장"
-          >
-            페이지 PDF 저장 📄
-          </button>
           <a
             class="btn btn-outline"
             href="https://funnyfunny.cloud/"
@@ -183,6 +175,95 @@
     </header>
 
     <main class="max-w-6xl mx-auto px-4 pb-14">
+      <!-- HTML to PDF Section - 주요 기능으로 상단 이동 -->
+      <section class="glass rounded-3xl p-5 ringy mb-6">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <h2 class="text-lg font-bold">HTML → PDF 변환</h2>
+            <p class="muted small mt-1">
+              HTML 파일을 업로드하면 PDF로 변환해 다운로드할 수 있어요.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-4 grid lg:grid-cols-2 gap-4">
+          <div>
+            <div
+              id="htmlDropzone"
+              class="rounded-2xl border border-white/15 bg-white/5 p-5"
+            >
+              <div
+                class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+              >
+                <div>
+                  <div class="font-semibold text-white">
+                    HTML 파일 드래그&드롭
+                  </div>
+                  <div class="muted small mt-1">
+                    HTML과 이미지 파일을 함께 선택하세요.
+                  </div>
+                </div>
+                <label
+                  class="btn btn-primary relative overflow-hidden cursor-pointer shadow-lg shadow-cyan-500/15"
+                >
+                  <input
+                    id="htmlFileInput"
+                    type="file"
+                    class="absolute inset-0 opacity-0 cursor-pointer"
+                    accept=".html,.htm,text/html,image/*"
+                    multiple
+                    aria-label="HTML 및 이미지 파일 선택"
+                  />
+                  <span class="font-semibold">파일 선택</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="font-bold">업로드된 HTML</h3>
+                <button
+                  id="btnClearHtml"
+                  class="btn btn-ghost btn-sm"
+                  type="button"
+                  style="display: none"
+                >
+                  비우기
+                </button>
+              </div>
+              <div id="htmlFileName" class="muted small"></div>
+            </div>
+
+            <div class="mt-4">
+              <button
+                id="btnConvertHtmlToPdf"
+                class="btn btn-primary w-full shadow-lg shadow-emerald-400/25"
+                type="button"
+                disabled
+              >
+                PDF로 변환하기
+              </button>
+              <div id="htmlStatus" class="mt-2 muted small"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="chip rounded-2xl p-4">
+              <div class="font-semibold mb-2">미리보기</div>
+              <div
+                id="htmlPreview"
+                class="rounded-xl border border-white/10 bg-black/30 p-3"
+                style="min-height: 300px; max-height: 600px; overflow: auto; position: relative;"
+              >
+                <div class="muted small text-center py-8">
+                  HTML 파일을 업로드하면 여기에 미리보기가 표시됩니다.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="grid lg:grid-cols-2 gap-4">
         <!-- Upload -->
         <div class="glass rounded-3xl p-5 ringy">
@@ -229,7 +310,7 @@
               </label>
             </div>
             <div class="mt-3 muted small">
-              팁: 리스트에서 썸네일을
+              💡 팁: 리스트에서 썸네일을
               <span class="text-white font-semibold">드래그</span>해서 순서를
               바꿀 수 있어요.
             </div>
@@ -247,10 +328,10 @@
 
             <div
               id="emptyHint"
-              class="mt-4 rounded-2xl border border-white/10 bg-white/5 p-4 muted small"
+              class="mt-4 rounded-2xl border border-white/10 bg-white/5 p-4 muted small text-center"
             >
-              아직 이미지가 없어요. 위에서 업로드하거나 파일 선택 버튼을
-              눌러보세요.
+              📷 아직 이미지가 없어요.<br />
+              위에서 업로드하거나 파일 선택 버튼을 눌러보세요.
             </div>
           </div>
         </div>
@@ -404,7 +485,7 @@
               </div>
 
               <div class="mt-3 muted small">
-                투명 배경은 <span class="text-white font-semibold">PNG</span>일
+                💡 투명 배경은 <span class="text-white font-semibold">PNG</span>일
                 때만 의미가 있어요.
               </div>
             </div>
@@ -482,7 +563,7 @@
               </div>
 
               <div class="mt-3 muted small">
-                “이미지에 맞춤”은 이미지 크기에 맞춰 PDF 페이지를 잡아서
+                💡 "이미지에 맞춤"은 이미지 크기에 맞춰 PDF 페이지를 잡아서
                 <span class="text-white font-semibold">잘림을 최소화</span>해요.
               </div>
             </div>
@@ -536,7 +617,7 @@
               ></canvas>
             </div>
             <div class="muted small mt-2">
-              캔버스는 브라우저 성능에 따라 큰 이미지에서 시간이 걸릴 수 있어요.
+              ⚡ 캔버스는 브라우저 성능에 따라 큰 이미지에서 시간이 걸릴 수 있어요.
             </div>
           </div>
 
@@ -563,101 +644,13 @@
               class="mt-4 rounded-xl border border-white/10 bg-white/5 p-3 muted small"
             >
               🔒 이 페이지는 기본적으로
-              <b class="text-white">브라우저 안에서</b> 처리합니다.
+              <b class="text-white">브라우저 안에서</b> 처리합니다.<br />
               (대용량/초고해상도는 느릴 수 있어요.)
             </div>
           </div>
         </div>
       </section>
 
-      <!-- HTML to PDF Section -->
-      <section class="mt-6 glass rounded-3xl p-5 ringy">
-        <div class="flex items-start justify-between gap-3">
-          <div>
-            <h2 class="text-lg font-bold">HTML → PDF 변환</h2>
-            <p class="muted small mt-1">
-              HTML 파일을 업로드하면 PDF로 변환해 다운로드할 수 있어요.
-            </p>
-          </div>
-        </div>
-
-        <div class="mt-4 grid lg:grid-cols-2 gap-4">
-          <div>
-            <div
-              id="htmlDropzone"
-              class="rounded-2xl border border-white/15 bg-white/5 p-5"
-            >
-              <div
-                class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
-              >
-                <div>
-                  <div class="font-semibold text-white">
-                    HTML 파일 드래그&드롭
-                  </div>
-                  <div class="muted small mt-1">
-                    HTML과 이미지 파일을 함께 선택하세요.
-                  </div>
-                </div>
-                <label
-                  class="btn btn-primary relative overflow-hidden cursor-pointer shadow-lg shadow-cyan-500/15"
-                >
-                  <input
-                    id="htmlFileInput"
-                    type="file"
-                    class="absolute inset-0 opacity-0 cursor-pointer"
-                    accept=".html,.htm,text/html,image/*"
-                    multiple
-                    aria-label="HTML 및 이미지 파일 선택"
-                  />
-                  <span class="font-semibold">파일 선택</span>
-                </label>
-              </div>
-            </div>
-
-            <div class="mt-4">
-              <div class="flex items-center justify-between mb-2">
-                <h3 class="font-bold">업로드된 HTML</h3>
-                <button
-                  id="btnClearHtml"
-                  class="btn btn-ghost btn-sm"
-                  type="button"
-                  style="display: none"
-                >
-                  비우기
-                </button>
-              </div>
-              <div id="htmlFileName" class="muted small"></div>
-            </div>
-
-            <div class="mt-4">
-              <button
-                id="btnConvertHtmlToPdf"
-                class="btn btn-primary w-full shadow-lg shadow-emerald-400/25"
-                type="button"
-                disabled
-              >
-                PDF로 변환하기
-              </button>
-              <div id="htmlStatus" class="mt-2 muted small"></div>
-            </div>
-          </div>
-
-          <div>
-            <div class="chip rounded-2xl p-4">
-              <div class="font-semibold mb-2">미리보기</div>
-              <div
-                id="htmlPreview"
-                class="rounded-xl border border-white/10 bg-black/30 p-3"
-                style="min-height: 300px; max-height: 600px; overflow: auto"
-              >
-                <div class="muted small text-center py-8">
-                  HTML 파일을 업로드하면 여기에 미리보기가 표시됩니다.
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <footer class="mt-6 text-center muted small">
         © FunnyFunny Cloud — 빠르고 가벼운 실험적 웹서비스
@@ -1400,57 +1393,7 @@
         .querySelectorAll('input[name="pdfMode"]')
         .forEach((r) => r.addEventListener("change", preview));
 
-      // HTML to PDF conversion (current page)
-      async function convertHtmlToPdf() {
-        try {
-          if (!window.html2canvas || !window.jspdf) {
-            setStatus("PDF 변환 라이브러리를 불러올 수 없어요.");
-            return;
-          }
 
-          setStatus("PDF 변환 중... (페이지가 길면 시간이 걸릴 수 있어요)");
-          infoStateEl.textContent = "PDF 변환중";
-
-          // html2canvas로 페이지를 캔버스로 변환
-          const canvas = await html2canvas(document.body, {
-            scale: 2, // 고해상도
-            useCORS: true,
-            logging: false,
-            backgroundColor: "#060913",
-            windowWidth: document.body.scrollWidth,
-            windowHeight: document.body.scrollHeight,
-          });
-
-          const imgData = canvas.toDataURL("image/png");
-          const { jsPDF } = window.jspdf;
-
-          // PDF 생성 (A4 크기, 가로 방향)
-          const pdf = new jsPDF({
-            orientation:
-              canvas.width > canvas.height ? "landscape" : "portrait",
-            unit: "px",
-            format: [canvas.width, canvas.height],
-          });
-
-          // 이미지를 PDF에 추가
-          pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
-
-          // PDF 다운로드
-          pdf.save("page.pdf");
-          setStatus("PDF 다운로드 완료!", true);
-          infoStateEl.textContent = "대기";
-        } catch (e) {
-          console.error(e);
-          setStatus(
-            "PDF 변환 중 오류가 발생했어요: " +
-              (e?.message || "알 수 없는 오류")
-          );
-          infoStateEl.textContent = "오류";
-        }
-      }
-
-      // HTML to PDF 버튼 이벤트 (current page)
-      $("btnHtmlToPdf")?.addEventListener("click", convertHtmlToPdf);
 
       // HTML file to PDF conversion
       let uploadedHtmlContent = null;
@@ -1581,14 +1524,11 @@
             htmlIframe.remove();
           }
           htmlIframe = document.createElement("iframe");
-          // 실제 브라우저 뷰포트 크기로 설정 (일반적인 데스크톱 크기)
-          htmlIframe.style.width = "1920px";
-          htmlIframe.style.height = "1080px";
+          htmlIframe.style.width = "100%";
+          htmlIframe.style.minHeight = "400px";
           htmlIframe.style.border = "none";
           htmlIframe.style.borderRadius = "8px";
           htmlIframe.style.backgroundColor = "#ffffff";
-          htmlIframe.style.transform = "scale(0.3)"; // 미리보기는 축소해서 보여줌
-          htmlIframe.style.transformOrigin = "top left";
           htmlPreview.style.overflow = "auto";
           htmlPreview.style.maxHeight = "600px";
           htmlPreview.innerHTML = "";
@@ -1596,28 +1536,28 @@
 
           // iframe에 HTML 내용 쓰기
           htmlIframe.onload = () => {
-            // iframe 내부의 뷰포트 크기를 실제 브라우저처럼 설정
             const iframeDoc =
               htmlIframe.contentDocument || htmlIframe.contentWindow.document;
             const iframeWindow = htmlIframe.contentWindow;
 
             // 실제 콘텐츠 크기에 맞춰 iframe 크기 조정
             setTimeout(() => {
-              const contentWidth = Math.max(
-                iframeDoc.body.scrollWidth || 1920,
-                iframeWindow.innerWidth || 1920
-              );
-              const contentHeight = Math.max(
-                iframeDoc.body.scrollHeight || 1080,
-                iframeWindow.innerHeight || 1080
-              );
+              try {
+                const contentHeight = Math.max(
+                  iframeDoc.body?.scrollHeight || iframeDoc.documentElement?.scrollHeight || 400,
+                  iframeDoc.body?.offsetHeight || 400
+                );
+                
+                // 최대 높이 제한 (600px 컨테이너에 맞춤)
+                htmlIframe.style.height = Math.min(contentHeight, 800) + "px";
+              } catch (e) {
+                console.warn("iframe 크기 조정 실패:", e);
+                htmlIframe.style.height = "400px";
+              }
 
-              htmlIframe.style.width = contentWidth + "px";
-              htmlIframe.style.height = contentHeight + "px";
-            }, 100);
-
-            setHtmlStatus("HTML 파일 로드 완료!", true);
-            btnConvertHtmlToPdf.disabled = false;
+              setHtmlStatus("HTML 파일 로드 완료!", true);
+              btnConvertHtmlToPdf.disabled = false;
+            }, 200);
           };
 
           htmlIframe.srcdoc = htmlText;
@@ -1641,7 +1581,7 @@
           htmlIframe = null;
         }
         htmlPreview.innerHTML =
-          '<div class="muted small text-center py-8">HTML 파일을 업로드하면 여기에 미리보기가 표시됩니다.</div>';
+          '<div class="muted small text-center py-8">📄 HTML 파일을 업로드하면 여기에 미리보기가 표시됩니다.</div>';
         htmlFileName.textContent = "";
         btnClearHtml.style.display = "none";
         btnConvertHtmlToPdf.disabled = true;
@@ -1718,13 +1658,12 @@
           setHtmlStatus("PDF 변환 중... (페이지가 길면 시간이 걸릴 수 있어요)");
 
           // 실제 뷰포트 크기 가져오기 (iframe 내부의 실제 렌더링 크기)
-          // scrollWidth/Height는 전체 콘텐츠 크기, innerWidth/Height는 뷰포트 크기
           const contentWidth = Math.max(
-            iframeBody.scrollWidth || 1920,
+            iframeBody.scrollWidth || iframeBody.offsetWidth || 1920,
             iframeWindow.innerWidth || 1920
           );
           const contentHeight = Math.max(
-            iframeBody.scrollHeight || 1080,
+            iframeBody.scrollHeight || iframeBody.offsetHeight || 1080,
             iframeWindow.innerHeight || 1080
           );
 
