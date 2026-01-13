@@ -137,6 +137,27 @@
       input[type="range"] {
         accent-color: #22c55e;
       }
+      .lang-switch {
+        display: inline-flex;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(8, 12, 22, 0.7);
+        padding: 4px;
+        gap: 4px;
+        font-size: 13px;
+      }
+      .lang-switch button {
+        border-radius: 999px;
+        padding: 6px 12px;
+        color: rgba(255, 255, 255, 0.7);
+        background: transparent;
+        border: none;
+        cursor: pointer;
+      }
+      .lang-switch button.active {
+        background: rgba(34, 211, 238, 0.2);
+        color: #e9fdff;
+      }
     </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1204894220949193"
      crossorigin="anonymous"></script>
@@ -190,23 +211,30 @@
             📎
           </div>
           <div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+            <h1
+              class="text-2xl sm:text-3xl font-extrabold tracking-tight"
+              data-i18n="heroTitle"
+            >
               이미지 합치기 & PDF 변환
             </h1>
-            <p class="muted mt-1">
+            <p class="muted mt-1" data-i18n="heroSubtitle">
               여러 장 업로드 → 드래그 정렬 → 한 장으로 합치거나 PDF로 저장
             </p>
           </div>
         </div>
 
         <!-- 다른 서비스 보기: 기본 포함 -->
-        <div class="flex gap-2">
+        <div class="flex gap-2 items-center">
+          <div class="lang-switch" role="tablist" aria-label="Language switcher">
+            <button type="button" data-lang="ko" class="active">한국어</button>
+            <button type="button" data-lang="en">English</button>
+          </div>
           <a
             class="btn btn-outline"
             href="https://funnyfunny.cloud/"
             target="_blank"
             rel="noopener"
-            >다른 서비스 보기 ↗</a
+            ><span data-i18n="viewOtherServices">다른 서비스 보기 ↗</span></a
           >
         </div>
       </div>
@@ -217,8 +245,10 @@
       <section class="glass rounded-3xl p-5 ringy mb-6">
         <div class="flex items-start justify-between gap-3">
           <div>
-            <h2 class="text-lg font-bold">HTML → PDF 변환</h2>
-            <p class="muted small mt-1">
+            <h2 class="text-lg font-bold" data-i18n="htmlTitle">
+              HTML → PDF 변환
+            </h2>
+            <p class="muted small mt-1" data-i18n="htmlSubtitle">
               HTML 파일을 업로드하면 PDF로 변환해 다운로드할 수 있어요.
             </p>
           </div>
@@ -234,10 +264,10 @@
                 class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
               >
                 <div>
-                  <div class="font-semibold text-white">
+                  <div class="font-semibold text-white" data-i18n="htmlDropTitle">
                     HTML 파일 드래그&드롭
                   </div>
-                  <div class="muted small mt-1">
+                  <div class="muted small mt-1" data-i18n="htmlDropHint">
                     HTML과 이미지 파일을 함께 선택하세요.
                   </div>
                 </div>
@@ -251,20 +281,26 @@
                     accept=".html,.htm,text/html,image/*"
                     multiple
                     aria-label="HTML 및 이미지 파일 선택"
+                    data-i18n-aria="htmlFileAria"
                   />
-                  <span class="font-semibold">파일 선택</span>
+                  <span class="font-semibold" data-i18n="btnSelectFiles">
+                    파일 선택
+                  </span>
                 </label>
               </div>
             </div>
 
             <div class="mt-4">
               <div class="flex items-center justify-between mb-2">
-                <h3 class="font-bold">업로드된 HTML</h3>
+                <h3 class="font-bold" data-i18n="htmlUploadedTitle">
+                  업로드된 HTML
+                </h3>
                 <button
                   id="btnClearHtml"
                   class="btn btn-ghost btn-sm"
                   type="button"
                   style="display: none"
+                  data-i18n="btnClear"
                 >
                   비우기
                 </button>
@@ -273,22 +309,36 @@
             </div>
 
             <div class="mt-4 chip rounded-2xl p-4">
-              <div class="font-semibold">PDF 렌더링 폭</div>
-              <div class="muted small mt-1">
+              <div class="font-semibold" data-i18n="htmlViewportTitle">
+                PDF 렌더링 폭
+              </div>
+              <div class="muted small mt-1" data-i18n="htmlViewportHint">
                 문서 성향에 맞게 PC/모바일 폭을 선택하세요.
               </div>
               <select
                 id="htmlViewport"
                 class="mt-2 w-full rounded-xl bg-black/30 border border-white/15 px-3 py-2"
               >
-                <option value="desktop" selected>데스크톱(1280px)</option>
-                <option value="wide">와이드(1600px)</option>
-                <option value="auto">문서 자동</option>
-                <option value="mobile">모바일(390px)</option>
-                <option value="custom">직접 입력</option>
+                <option value="desktop" selected data-i18n="viewportDesktop">
+                  데스크톱(1280px)
+                </option>
+                <option value="wide" data-i18n="viewportWide">
+                  와이드(1600px)
+                </option>
+                <option value="auto" data-i18n="viewportAuto">
+                  문서 자동
+                </option>
+                <option value="mobile" data-i18n="viewportMobile">
+                  모바일(390px)
+                </option>
+                <option value="custom" data-i18n="viewportCustom">
+                  직접 입력
+                </option>
               </select>
               <div id="htmlCustomWrap" class="mt-3" style="display: none">
-                <div class="muted small">직접 입력(px)</div>
+                <div class="muted small" data-i18n="viewportCustomLabel">
+                  직접 입력(px)
+                </div>
                 <input
                   id="htmlCustomWidth"
                   type="number"
@@ -306,6 +356,7 @@
                 class="btn btn-primary w-full shadow-lg shadow-emerald-400/25"
                 type="button"
                 disabled
+                data-i18n="btnConvertHtml"
               >
                 PDF로 변환하기
               </button>
@@ -315,13 +366,18 @@
 
           <div>
             <div class="chip rounded-2xl p-4">
-              <div class="font-semibold mb-2">미리보기</div>
+              <div class="font-semibold mb-2" data-i18n="previewTitle">
+                미리보기
+              </div>
               <div
                 id="htmlPreview"
                 class="rounded-xl border border-white/10 bg-black/30 p-3"
                 style="min-height: 300px; max-height: 600px; overflow: auto; position: relative;"
               >
-                <div class="muted small text-center py-8">
+                <div
+                  class="muted small text-center py-8"
+                  data-i18n="htmlPreviewEmpty"
+                >
                   HTML 파일을 업로드하면 여기에 미리보기가 표시됩니다.
                 </div>
               </div>
@@ -335,14 +391,21 @@
         <div class="glass rounded-3xl p-5 ringy">
           <div class="flex items-start justify-between gap-3">
             <div>
-              <h2 class="text-lg font-bold">1) 이미지 넣기</h2>
-              <p class="muted small mt-1">
+              <h2 class="text-lg font-bold" data-i18n="step1Title">
+                1) 이미지 넣기
+              </h2>
+              <p class="muted small mt-1" data-i18n="step1Subtitle">
                 PNG/JPG/WEBP/GIF(첫 프레임) 등 브라우저가 읽는 이미지를
                 지원해요.
               </p>
             </div>
             <div class="flex gap-2">
-              <button id="btnClear" class="btn btn-ghost btn-sm" type="button">
+              <button
+                id="btnClear"
+                class="btn btn-ghost btn-sm"
+                type="button"
+                data-i18n="btnClearAll"
+              >
                 전체 비우기
               </button>
             </div>
@@ -356,8 +419,10 @@
               class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
             >
               <div>
-                <div class="font-semibold text-white">여기에 드래그&드롭</div>
-                <div class="muted small mt-1">
+                <div class="font-semibold text-white" data-i18n="dropzoneTitle">
+                  여기에 드래그&드롭
+                </div>
+                <div class="muted small mt-1" data-i18n="dropzoneHint">
                   또는 파일 선택 버튼을 눌러주세요.
                 </div>
               </div>
@@ -371,11 +436,14 @@
                   accept="image/*"
                   multiple
                   aria-label="이미지 파일 선택"
+                  data-i18n-aria="imageFileAria"
                 />
-                <span class="font-semibold">파일 선택</span>
+                <span class="font-semibold" data-i18n="btnSelectImages">
+                  파일 선택
+                </span>
               </label>
             </div>
-            <div class="mt-3 muted small">
+            <div class="mt-3 muted small" data-i18n-html="dragTip">
               💡 팁: 리스트에서 썸네일을
               <span class="text-white font-semibold">드래그</span>해서 순서를
               바꿀 수 있어요.
@@ -384,8 +452,12 @@
 
           <div class="mt-4">
             <div class="flex items-center justify-between">
-              <h3 class="font-bold">업로드 목록</h3>
-              <div class="muted small"><span id="count">0</span>장</div>
+              <h3 class="font-bold" data-i18n="uploadListTitle">
+                업로드 목록
+              </h3>
+              <div class="muted small">
+                <span id="count">0</span><span data-i18n="unitImages">장</span>
+              </div>
             </div>
 
             <div id="list" class="mt-3 grid sm:grid-cols-2 gap-3">
@@ -395,6 +467,7 @@
             <div
               id="emptyHint"
               class="mt-4 rounded-2xl border border-white/10 bg-white/5 p-4 muted small text-center"
+              data-i18n-html="emptyHint"
             >
               📷 아직 이미지가 없어요.<br />
               위에서 업로드하거나 파일 선택 버튼을 눌러보세요.
@@ -404,8 +477,10 @@
 
         <!-- Options -->
         <div class="glass rounded-3xl p-5 ringy">
-          <h2 class="text-lg font-bold">2) 출력 설정</h2>
-          <p class="muted small mt-1">
+          <h2 class="text-lg font-bold" data-i18n="step2Title">
+            2) 출력 설정
+          </h2>
+          <p class="muted small mt-1" data-i18n="step2Subtitle">
             한 장 이미지로 합치기(세로/가로/그리드) 또는 PDF(페이지별/그리드)로
             변환.
           </p>
@@ -413,22 +488,32 @@
           <div class="mt-5 grid gap-4">
             <div class="grid sm:grid-cols-2 gap-3">
               <div class="chip rounded-2xl p-4">
-                <div class="font-semibold">출력 타입</div>
+                <div class="font-semibold" data-i18n="outputTypeLabel">
+                  출력 타입
+                </div>
                 <select
                   id="outType"
                   class="mt-2 w-full rounded-xl bg-black/30 border border-white/15 px-3 py-2"
                 >
-                  <option value="image">합친 이미지로 다운로드</option>
-                  <option value="pdf">PDF로 다운로드</option>
-                  <option value="zip">개별 변환 ZIP(이미지 포맷만)</option>
+                  <option value="image" data-i18n="outTypeImage">
+                    합친 이미지로 다운로드
+                  </option>
+                  <option value="pdf" data-i18n="outTypePdf">
+                    PDF로 다운로드
+                  </option>
+                  <option value="zip" data-i18n="outTypeZip">
+                    개별 변환 ZIP(이미지 포맷만)
+                  </option>
                 </select>
-                <div class="muted small mt-2">
+                <div class="muted small mt-2" data-i18n="zipHint">
                   ZIP은 개별 이미지를 선택한 포맷으로 변환해 묶어줘요.
                 </div>
               </div>
 
               <div class="chip rounded-2xl p-4">
-                <div class="font-semibold">이미지 포맷</div>
+                <div class="font-semibold" data-i18n="imageFormatLabel">
+                  이미지 포맷
+                </div>
                 <select
                   id="imgFormat"
                   class="mt-2 w-full rounded-xl bg-black/30 border border-white/15 px-3 py-2"
@@ -439,7 +524,9 @@
                 </select>
                 <div id="qualityWrap" class="mt-3">
                   <div class="flex items-center justify-between">
-                    <div class="muted small">JPG/WEBP 품질</div>
+                    <div class="muted small" data-i18n="qualityLabel">
+                      JPG/WEBP 품질
+                    </div>
                     <div class="small"><span id="qLabel">0.90</span></div>
                   </div>
                   <input
@@ -458,12 +545,16 @@
             <div class="chip rounded-2xl p-4">
               <div class="flex items-start justify-between gap-3">
                 <div>
-                  <div class="font-semibold">합치기 레이아웃</div>
-                  <div class="muted small mt-1">
+                  <div class="font-semibold" data-i18n="layoutTitle">
+                    합치기 레이아웃
+                  </div>
+                  <div class="muted small mt-1" data-i18n="layoutHint">
                     출력 타입이 “합친 이미지”일 때 적용
                   </div>
                 </div>
-                <div class="small text-white/80">캔버스 기반</div>
+                <div class="small text-white/80" data-i18n="layoutNote">
+                  캔버스 기반
+                </div>
               </div>
 
               <div class="mt-3 grid sm:grid-cols-3 gap-2">
@@ -477,7 +568,7 @@
                     class="accent-green-500"
                     checked
                   />
-                  <span>세로</span>
+                  <span data-i18n="layoutVertical">세로</span>
                 </label>
                 <label
                   class="flex items-center gap-2 rounded-xl px-3 py-2 bg-white/5 border border-white/10 cursor-pointer"
@@ -488,7 +579,7 @@
                     value="horizontal"
                     class="accent-green-500"
                   />
-                  <span>가로</span>
+                  <span data-i18n="layoutHorizontal">가로</span>
                 </label>
                 <label
                   class="flex items-center gap-2 rounded-xl px-3 py-2 bg-white/5 border border-white/10 cursor-pointer"
@@ -499,7 +590,7 @@
                     value="grid"
                     class="accent-green-500"
                   />
-                  <span>그리드</span>
+                  <span data-i18n="layoutGrid">그리드</span>
                 </label>
               </div>
 
@@ -508,8 +599,8 @@
               >
                 <input id="keepSize" type="checkbox" class="accent-green-500" />
                 <div>
-                  <div>원본 크기 그대로 붙이기</div>
-                  <div class="muted small">
+                  <div data-i18n="keepSizeTitle">원본 크기 그대로 붙이기</div>
+                  <div class="muted small" data-i18n="keepSizeHint">
                     리사이즈 없이 간격 0으로 세로/가로 합치기
                   </div>
                 </div>
@@ -517,7 +608,7 @@
 
               <div class="mt-4 grid sm:grid-cols-3 gap-3">
                 <div>
-                  <div class="muted small">간격(px)</div>
+                  <div class="muted small" data-i18n="gapLabel">간격(px)</div>
                   <input
                     id="gap"
                     type="number"
@@ -527,18 +618,22 @@
                   />
                 </div>
                 <div>
-                  <div class="muted small">배경</div>
+                  <div class="muted small" data-i18n="bgLabel">배경</div>
                   <select
                     id="bg"
                     class="mt-1 w-full rounded-xl bg-black/30 border border-white/15 px-3 py-2"
                   >
-                    <option value="#0b1220">어두움</option>
-                    <option value="#ffffff">흰색</option>
-                    <option value="transparent">투명(PNG만)</option>
+                    <option value="#0b1220" data-i18n="bgDark">어두움</option>
+                    <option value="#ffffff" data-i18n="bgLight">흰색</option>
+                    <option value="transparent" data-i18n="bgTransparent">
+                      투명(PNG만)
+                    </option>
                   </select>
                 </div>
                 <div>
-                  <div class="muted small">그리드 열</div>
+                  <div class="muted small" data-i18n="gridColsLabel">
+                    그리드 열
+                  </div>
                   <input
                     id="cols"
                     type="number"
@@ -550,7 +645,7 @@
                 </div>
               </div>
 
-              <div class="mt-3 muted small">
+              <div class="mt-3 muted small" data-i18n-html="bgTip">
                 💡 투명 배경은 <span class="text-white font-semibold">PNG</span>일
                 때만 의미가 있어요.
               </div>
@@ -559,37 +654,55 @@
             <div class="chip rounded-2xl p-4">
               <div class="flex items-start justify-between gap-3">
                 <div>
-                  <div class="font-semibold">PDF 설정</div>
-                  <div class="muted small mt-1">출력 타입이 PDF일 때 적용</div>
+                  <div class="font-semibold" data-i18n="pdfTitle">PDF 설정</div>
+                  <div class="muted small mt-1" data-i18n="pdfHint">
+                    출력 타입이 PDF일 때 적용
+                  </div>
                 </div>
-                <div class="small text-white/80">페이지 단위</div>
+                <div class="small text-white/80" data-i18n="pdfNote">
+                  페이지 단위
+                </div>
               </div>
 
               <div class="mt-3 grid sm:grid-cols-3 gap-3">
                 <div>
-                  <div class="muted small">용지</div>
+                  <div class="muted small" data-i18n="pdfPaperLabel">
+                    용지
+                  </div>
                   <select
                     id="pdfSize"
                     class="mt-1 w-full rounded-xl bg-black/30 border border-white/15 px-3 py-2"
                   >
                     <option value="a4">A4</option>
                     <option value="letter">Letter</option>
-                    <option value="auto">이미지에 맞춤(권장)</option>
+                    <option value="auto" data-i18n="pdfPaperAuto">
+                      이미지에 맞춤(권장)
+                    </option>
                   </select>
                 </div>
                 <div>
-                  <div class="muted small">방향</div>
+                  <div class="muted small" data-i18n="pdfOrientationLabel">
+                    방향
+                  </div>
                   <select
                     id="pdfOri"
                     class="mt-1 w-full rounded-xl bg-black/30 border border-white/15 px-3 py-2"
                   >
-                    <option value="portrait">세로</option>
-                    <option value="landscape">가로</option>
-                    <option value="auto">자동</option>
+                    <option value="portrait" data-i18n="orientationPortrait">
+                      세로
+                    </option>
+                    <option value="landscape" data-i18n="orientationLandscape">
+                      가로
+                    </option>
+                    <option value="auto" data-i18n="orientationAuto">
+                      자동
+                    </option>
                   </select>
                 </div>
                 <div>
-                  <div class="muted small">여백(px)</div>
+                  <div class="muted small" data-i18n="pdfMarginLabel">
+                    여백(px)
+                  </div>
                   <input
                     id="pdfMargin"
                     type="number"
@@ -612,7 +725,7 @@
                     class="accent-green-500"
                     checked
                   />
-                  <span>1페이지에 1장</span>
+                  <span data-i18n="pdfOnePerPage">1페이지에 1장</span>
                 </label>
                 <label
                   class="flex items-center gap-2 rounded-xl px-3 py-2 bg-white/5 border border-white/10 cursor-pointer"
@@ -624,11 +737,11 @@
                     value="grid"
                     class="accent-green-500"
                   />
-                  <span>한 페이지 그리드</span>
+                  <span data-i18n="pdfGrid">한 페이지 그리드</span>
                 </label>
               </div>
 
-              <div class="mt-3 muted small">
+              <div class="mt-3 muted small" data-i18n-html="pdfTip">
                 💡 "이미지에 맞춤"은 이미지 크기에 맞춰 PDF 페이지를 잡아서
                 <span class="text-white font-semibold">잘림을 최소화</span>해요.
               </div>
@@ -640,6 +753,7 @@
               id="btnPreview"
               class="btn btn-ghost btn-sm w-full sm:w-auto"
               type="button"
+              data-i18n="btnPreview"
             >
               미리보기
             </button>
@@ -647,6 +761,7 @@
               id="btnMake"
               class="btn btn-primary w-full sm:flex-1 shadow-lg shadow-emerald-400/25"
               type="button"
+              data-i18n="btnMakeDownload"
             >
               다운로드 만들기
             </button>
@@ -660,8 +775,10 @@
       <section class="mt-4 glass rounded-3xl p-5 ringy">
         <div class="flex items-start justify-between gap-3">
           <div>
-            <h2 class="text-lg font-bold">3) 결과 미리보기</h2>
-            <p class="muted small mt-1">
+            <h2 class="text-lg font-bold" data-i18n="step3Title">
+              3) 결과 미리보기
+            </h2>
+            <p class="muted small mt-1" data-i18n="step3Subtitle">
               합친 이미지는 아래 캔버스로, PDF는 페이지 수/용량 정보로 미리
               확인해요.
             </p>
@@ -670,6 +787,7 @@
             class="btn btn-ghost btn-sm"
             href="#top"
             onclick="window.scrollTo({top:0,behavior:'smooth'})"
+            data-i18n="btnTop"
             >위로</a
           >
         </div>
@@ -682,32 +800,35 @@
                 class="w-full rounded-xl bg-black/40"
               ></canvas>
             </div>
-            <div class="muted small mt-2">
+            <div class="muted small mt-2" data-i18n="canvasTip">
               ⚡ 캔버스는 브라우저 성능에 따라 큰 이미지에서 시간이 걸릴 수 있어요.
             </div>
           </div>
 
           <div class="chip rounded-2xl p-4">
-            <div class="font-semibold">정보</div>
+            <div class="font-semibold" data-i18n="infoTitle">정보</div>
             <div class="mt-3 space-y-2 small">
               <div class="flex justify-between">
-                <span class="muted">총 이미지</span
+                <span class="muted" data-i18n="infoTotal">총 이미지</span
                 ><span id="infoCount">0</span>
               </div>
               <div class="flex justify-between">
-                <span class="muted">예상 크기</span><span id="infoSize">-</span>
+                <span class="muted" data-i18n="infoSize">예상 크기</span
+                ><span id="infoSize">-</span>
               </div>
               <div class="flex justify-between">
-                <span class="muted">PDF 페이지</span
+                <span class="muted" data-i18n="infoPages">PDF 페이지</span
                 ><span id="infoPages">-</span>
               </div>
               <div class="flex justify-between">
-                <span class="muted">상태</span><span id="infoState">대기</span>
+                <span class="muted" data-i18n="infoState">상태</span
+                ><span id="infoState" data-i18n="stateIdle">대기</span>
               </div>
             </div>
 
             <div
               class="mt-4 rounded-xl border border-white/10 bg-white/5 p-3 muted small"
+              data-i18n-html="privacyNote"
             >
               🔒 이 페이지는 기본적으로
               <b class="text-white">브라우저 안에서</b> 처리합니다.<br />
@@ -718,7 +839,7 @@
       </section>
 
 
-      <footer class="mt-6 text-center muted small">
+      <footer class="mt-6 text-center muted small" data-i18n="footerNote">
         © FunnyFunny Cloud — 빠르고 가벼운 실험적 웹서비스
       </footer>
     </main>
@@ -727,6 +848,356 @@
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
     <script>
+      const translations = {
+        ko: {
+          metaTitle: "이미지 합치기 & PDF 변환 — 무료 웹툴",
+          metaDescription:
+            "여러 장의 이미지를 한 장으로 합치거나(PNG/JPG/WEBP), PDF로 변환/다운로드까지 한 번에. 드래그 정렬·여백·간격·배치 지원.",
+          metaOgTitle: "이미지 합치기 & PDF 변환 — 무료 웹툴",
+          metaOgDescription:
+            "여러 장 이미지를 한 장으로 합치고, PDF로 변환해 바로 다운로드!",
+          heroTitle: "이미지 합치기 & PDF 변환",
+          heroSubtitle:
+            "여러 장 업로드 → 드래그 정렬 → 한 장으로 합치거나 PDF로 저장",
+          viewOtherServices: "다른 서비스 보기 ↗",
+          htmlTitle: "HTML → PDF 변환",
+          htmlSubtitle:
+            "HTML 파일을 업로드하면 PDF로 변환해 다운로드할 수 있어요.",
+          htmlDropTitle: "HTML 파일 드래그&드롭",
+          htmlDropHint: "HTML과 이미지 파일을 함께 선택하세요.",
+          htmlFileAria: "HTML 및 이미지 파일 선택",
+          btnSelectFiles: "파일 선택",
+          htmlUploadedTitle: "업로드된 HTML",
+          btnClear: "비우기",
+          htmlViewportTitle: "PDF 렌더링 폭",
+          htmlViewportHint: "문서 성향에 맞게 PC/모바일 폭을 선택하세요.",
+          viewportDesktop: "데스크톱(1280px)",
+          viewportWide: "와이드(1600px)",
+          viewportAuto: "문서 자동",
+          viewportMobile: "모바일(390px)",
+          viewportCustom: "직접 입력",
+          viewportCustomLabel: "직접 입력(px)",
+          btnConvertHtml: "PDF로 변환하기",
+          previewTitle: "미리보기",
+          htmlPreviewEmpty:
+            "HTML 파일을 업로드하면 여기에 미리보기가 표시됩니다.",
+          step1Title: "1) 이미지 넣기",
+          step1Subtitle:
+            "PNG/JPG/WEBP/GIF(첫 프레임) 등 브라우저가 읽는 이미지를 지원해요.",
+          btnClearAll: "전체 비우기",
+          dropzoneTitle: "여기에 드래그&드롭",
+          dropzoneHint: "또는 파일 선택 버튼을 눌러주세요.",
+          imageFileAria: "이미지 파일 선택",
+          btnSelectImages: "파일 선택",
+          dragTip:
+            "💡 팁: 리스트에서 썸네일을 <span class=\"text-white font-semibold\">드래그</span>해서 순서를 바꿀 수 있어요.",
+          uploadListTitle: "업로드 목록",
+          unitImages: "장",
+          emptyHint:
+            "📷 아직 이미지가 없어요.<br />위에서 업로드하거나 파일 선택 버튼을 눌러보세요.",
+          step2Title: "2) 출력 설정",
+          step2Subtitle:
+            "한 장 이미지로 합치기(세로/가로/그리드) 또는 PDF(페이지별/그리드)로 변환.",
+          outputTypeLabel: "출력 타입",
+          outTypeImage: "합친 이미지로 다운로드",
+          outTypePdf: "PDF로 다운로드",
+          outTypeZip: "개별 변환 ZIP(이미지 포맷만)",
+          zipHint: "ZIP은 개별 이미지를 선택한 포맷으로 변환해 묶어줘요.",
+          imageFormatLabel: "이미지 포맷",
+          qualityLabel: "JPG/WEBP 품질",
+          layoutTitle: "합치기 레이아웃",
+          layoutHint: "출력 타입이 “합친 이미지”일 때 적용",
+          layoutNote: "캔버스 기반",
+          layoutVertical: "세로",
+          layoutHorizontal: "가로",
+          layoutGrid: "그리드",
+          keepSizeTitle: "원본 크기 그대로 붙이기",
+          keepSizeHint: "리사이즈 없이 간격 0으로 세로/가로 합치기",
+          gapLabel: "간격(px)",
+          bgLabel: "배경",
+          bgDark: "어두움",
+          bgLight: "흰색",
+          bgTransparent: "투명(PNG만)",
+          gridColsLabel: "그리드 열",
+          bgTip:
+            "💡 투명 배경은 <span class=\"text-white font-semibold\">PNG</span>일 때만 의미가 있어요.",
+          pdfTitle: "PDF 설정",
+          pdfHint: "출력 타입이 PDF일 때 적용",
+          pdfNote: "페이지 단위",
+          pdfPaperLabel: "용지",
+          pdfPaperAuto: "이미지에 맞춤(권장)",
+          pdfOrientationLabel: "방향",
+          orientationPortrait: "세로",
+          orientationLandscape: "가로",
+          orientationAuto: "자동",
+          pdfMarginLabel: "여백(px)",
+          pdfOnePerPage: "1페이지에 1장",
+          pdfGrid: "한 페이지 그리드",
+          pdfTip:
+            "💡 \"이미지에 맞춤\"은 이미지 크기에 맞춰 PDF 페이지를 잡아서 <span class=\"text-white font-semibold\">잘림을 최소화</span>해요.",
+          btnPreview: "미리보기",
+          btnMakeDownload: "다운로드 만들기",
+          step3Title: "3) 결과 미리보기",
+          step3Subtitle:
+            "합친 이미지는 아래 캔버스로, PDF는 페이지 수/용량 정보로 미리 확인해요.",
+          btnTop: "위로",
+          canvasTip:
+            "⚡ 캔버스는 브라우저 성능에 따라 큰 이미지에서 시간이 걸릴 수 있어요.",
+          infoTitle: "정보",
+          infoTotal: "총 이미지",
+          infoSize: "예상 크기",
+          infoPages: "PDF 페이지",
+          infoState: "상태",
+          stateIdle: "대기",
+          privacyNote:
+            "🔒 이 페이지는 기본적으로 <b class=\"text-white\">브라우저 안에서</b> 처리합니다.<br />(대용량/초고해상도는 느릴 수 있어요.)",
+          footerNote: "© FunnyFunny Cloud — 빠르고 가벼운 실험적 웹서비스",
+          statusLoading: "로딩",
+          statusPreview: "미리보기",
+          statusError: "오류",
+          statusBuilding: "생성중",
+          errorImageRead: "이미지를 읽을 수 없어요.",
+          errorOnlyImages: "이미지 파일만 넣을 수 있어요.",
+          statusLoadingImages: "이미지 {count}장 불러오는 중...",
+          statusUploadDone: "업로드 완료!",
+          statusPreviewError:
+            "미리보기 중 오류가 발생했어요. 설정을 다시 확인해주세요.",
+          statusNeedImages: "이미지를 먼저 추가해주세요.",
+          statusBuildingNow: "만드는 중... (큰 이미지는 시간이 걸릴 수 있어요)",
+          statusMergedDone: "합친 이미지를 다운로드했어요!",
+          statusPdfDone: "PDF 다운로드 완료!",
+          statusZipDone: "ZIP 다운로드 완료!",
+          statusZipUnsupported: "ZIP은 이미지 포맷(PNG/JPG/WEBP)에서만 지원해요.",
+          statusBuildError: "생성 중 오류가 발생했어요.",
+          errorImageCreate: "이미지 생성에 실패했어요.",
+          errorZipModule: "ZIP 모듈 로드 실패",
+          btnDelete: "삭제",
+          htmlNotFound: "HTML 파일을 찾을 수 없어요.",
+          htmlReading: "HTML 파일 읽는 중...",
+          htmlConvertingImages: "이미지 경로 변환 중...",
+          htmlLoaded: "HTML 파일 로드 완료!",
+          htmlReadFail: "HTML 파일을 읽을 수 없어요: {message}",
+          htmlNeedUpload: "먼저 HTML 파일을 업로드해주세요.",
+          htmlLibMissing: "PDF 변환 라이브러리를 불러올 수 없어요.",
+          htmlLoadingImages: "이미지 로딩 중...",
+          htmlConverting:
+            "PDF 변환 중... (페이지가 길면 시간이 걸릴 수 있어요)",
+          htmlPdfDone: "PDF 다운로드 완료!",
+          htmlPdfFail: "PDF 변환 중 오류가 발생했어요: {message}",
+          htmlPreviewEmptyHtml:
+            "📄 HTML 파일을 업로드하면 여기에 미리보기가 표시됩니다.",
+          htmlFileNameWithImages: "{name} (이미지 {count}개 포함)",
+          unknownError: "알 수 없는 오류",
+        },
+        en: {
+          metaTitle: "Image Merge & PDF — Free Web Tool",
+          metaDescription:
+            "Combine multiple images into one (PNG/JPG/WEBP) or convert to PDF and download. Drag sorting, margins, spacing, and layout supported.",
+          metaOgTitle: "Image Merge & PDF — Free Web Tool",
+          metaOgDescription:
+            "Merge multiple images into one and download as PDF instantly.",
+          heroTitle: "Image Merge & PDF",
+          heroSubtitle:
+            "Upload → drag reorder → merge into one image or save as PDF",
+          viewOtherServices: "See other services ↗",
+          htmlTitle: "HTML → PDF",
+          htmlSubtitle:
+            "Upload an HTML file and convert it to PDF for download.",
+          htmlDropTitle: "Drag & drop HTML file",
+          htmlDropHint: "Select the HTML file with its images together.",
+          htmlFileAria: "Select HTML and image files",
+          btnSelectFiles: "Select files",
+          htmlUploadedTitle: "Uploaded HTML",
+          btnClear: "Clear",
+          htmlViewportTitle: "PDF rendering width",
+          htmlViewportHint: "Pick PC/mobile width that fits the document.",
+          viewportDesktop: "Desktop (1280px)",
+          viewportWide: "Wide (1600px)",
+          viewportAuto: "Auto from document",
+          viewportMobile: "Mobile (390px)",
+          viewportCustom: "Custom",
+          viewportCustomLabel: "Custom input (px)",
+          btnConvertHtml: "Convert to PDF",
+          previewTitle: "Preview",
+          htmlPreviewEmpty: "Upload an HTML file to preview it here.",
+          step1Title: "1) Add images",
+          step1Subtitle:
+            "Supports PNG/JPG/WEBP/GIF (first frame) and other browser-readable images.",
+          btnClearAll: "Clear all",
+          dropzoneTitle: "Drag & drop here",
+          dropzoneHint: "Or click the file select button.",
+          imageFileAria: "Select image files",
+          btnSelectImages: "Select files",
+          dragTip:
+            "💡 Tip: Drag the thumbnails in the list to change order.",
+          uploadListTitle: "Upload list",
+          unitImages: " files",
+          emptyHint:
+            "📷 No images yet.<br />Upload above or click the file select button.",
+          step2Title: "2) Output settings",
+          step2Subtitle:
+            "Merge into one image (vertical/horizontal/grid) or export as PDF (per page/grid).",
+          outputTypeLabel: "Output type",
+          outTypeImage: "Download merged image",
+          outTypePdf: "Download as PDF",
+          outTypeZip: "Convert ZIP (image formats only)",
+          zipHint: "ZIP converts each image to the chosen format and bundles it.",
+          imageFormatLabel: "Image format",
+          qualityLabel: "JPG/WEBP quality",
+          layoutTitle: "Merge layout",
+          layoutHint: "Applies when output type is “merged image”",
+          layoutNote: "Canvas-based",
+          layoutVertical: "Vertical",
+          layoutHorizontal: "Horizontal",
+          layoutGrid: "Grid",
+          keepSizeTitle: "Keep original sizes",
+          keepSizeHint: "Merge with zero gap and no resizing",
+          gapLabel: "Gap (px)",
+          bgLabel: "Background",
+          bgDark: "Dark",
+          bgLight: "White",
+          bgTransparent: "Transparent (PNG only)",
+          gridColsLabel: "Grid columns",
+          bgTip:
+            "💡 Transparent background only works with <span class=\"text-white font-semibold\">PNG</span>.",
+          pdfTitle: "PDF settings",
+          pdfHint: "Applies when output type is PDF",
+          pdfNote: "Per page",
+          pdfPaperLabel: "Paper",
+          pdfPaperAuto: "Fit to image (recommended)",
+          pdfOrientationLabel: "Orientation",
+          orientationPortrait: "Portrait",
+          orientationLandscape: "Landscape",
+          orientationAuto: "Auto",
+          pdfMarginLabel: "Margin (px)",
+          pdfOnePerPage: "One image per page",
+          pdfGrid: "Grid on one page",
+          pdfTip:
+            "💡 “Fit to image” sizes the PDF page to minimize <span class=\"text-white font-semibold\">cropping</span>.",
+          btnPreview: "Preview",
+          btnMakeDownload: "Build download",
+          step3Title: "3) Result preview",
+          step3Subtitle:
+            "Merged images show on the canvas; PDFs show page count/size info.",
+          btnTop: "Top",
+          canvasTip:
+            "⚡ Large images can be slow depending on browser performance.",
+          infoTitle: "Info",
+          infoTotal: "Total images",
+          infoSize: "Estimated size",
+          infoPages: "PDF pages",
+          infoState: "State",
+          stateIdle: "Idle",
+          privacyNote:
+            "🔒 This page processes everything <b class=\"text-white\">in your browser</b>.<br />(Large/high-res files can be slow.)",
+          footerNote: "© FunnyFunny Cloud — fast, lightweight experimental web",
+          statusLoading: "Loading",
+          statusPreview: "Preview",
+          statusError: "Error",
+          statusBuilding: "Building",
+          errorImageRead: "Unable to read the image.",
+          errorOnlyImages: "Only image files are supported.",
+          statusLoadingImages: "Loading {count} images...",
+          statusUploadDone: "Upload complete!",
+          statusPreviewError:
+            "Preview error. Please re-check your settings.",
+          statusNeedImages: "Please add images first.",
+          statusBuildingNow: "Building... (large images may take a while)",
+          statusMergedDone: "Merged image downloaded!",
+          statusPdfDone: "PDF downloaded!",
+          statusZipDone: "ZIP downloaded!",
+          statusZipUnsupported:
+            "ZIP is supported only for PNG/JPG/WEBP output.",
+          statusBuildError: "An error occurred during build.",
+          errorImageCreate: "Failed to generate image.",
+          errorZipModule: "Failed to load ZIP module",
+          btnDelete: "Delete",
+          htmlNotFound: "Could not find an HTML file.",
+          htmlReading: "Reading HTML file...",
+          htmlConvertingImages: "Converting image paths...",
+          htmlLoaded: "HTML loaded!",
+          htmlReadFail: "Failed to read HTML file: {message}",
+          htmlNeedUpload: "Upload an HTML file first.",
+          htmlLibMissing: "PDF libraries are not available.",
+          htmlLoadingImages: "Loading images...",
+          htmlConverting: "Converting to PDF... (long pages may take time)",
+          htmlPdfDone: "PDF downloaded!",
+          htmlPdfFail: "PDF conversion failed: {message}",
+          htmlPreviewEmptyHtml:
+            "📄 Upload an HTML file to preview it here.",
+          htmlFileNameWithImages: "{name} (includes {count} images)",
+          unknownError: "Unknown error",
+        },
+      };
+
+      let currentLang = "ko";
+
+      function t(key, vars = {}) {
+        const table = translations[currentLang] || translations.ko;
+        const template = table[key] ?? translations.ko[key] ?? key;
+        return template.replace(/\{(\w+)\}/g, (_, token) =>
+          vars[token] !== undefined ? vars[token] : `{${token}}`
+        );
+      }
+
+      function applyTranslations() {
+        document.title = t("metaTitle");
+        const desc = document.querySelector('meta[name="description"]');
+        if (desc) desc.setAttribute("content", t("metaDescription"));
+        const ogTitle = document.querySelector('meta[property="og:title"]');
+        if (ogTitle) ogTitle.setAttribute("content", t("metaOgTitle"));
+        const ogDesc = document.querySelector(
+          'meta[property="og:description"]'
+        );
+        if (ogDesc) ogDesc.setAttribute("content", t("metaOgDescription"));
+
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          el.textContent = t(el.dataset.i18n);
+        });
+        document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+          el.innerHTML = t(el.dataset.i18nHtml);
+        });
+        document.querySelectorAll("[data-i18n-aria]").forEach((el) => {
+          el.setAttribute("aria-label", t(el.dataset.i18nAria));
+        });
+      }
+
+      function setLang(lang, options = {}) {
+        const nextLang = translations[lang] ? lang : "ko";
+        currentLang = nextLang;
+        document.documentElement.lang = nextLang;
+        localStorage.setItem("preferredLang", nextLang);
+        document.querySelectorAll(".lang-switch button").forEach((button) => {
+          button.classList.toggle("active", button.dataset.lang === nextLang);
+        });
+        applyTranslations();
+        renderList();
+
+        if (options.updateUrl) {
+          const url = new URL(window.location.href);
+          url.searchParams.set("lang", nextLang);
+          window.history.replaceState({}, "", url);
+        }
+      }
+
+      function detectLang() {
+        const params = new URLSearchParams(window.location.search);
+        const paramLang = params.get("lang");
+        if (translations[paramLang]) return paramLang;
+        const stored = localStorage.getItem("preferredLang");
+        if (translations[stored]) return stored;
+        const browser = navigator.language?.toLowerCase() || "";
+        return browser.startsWith("en") ? "en" : "ko";
+      }
+
+      document.querySelectorAll(".lang-switch button").forEach((button) => {
+        button.addEventListener("click", () => {
+          setLang(button.dataset.lang, { updateUrl: true });
+        });
+      });
+
+      setLang(detectLang(), { updateUrl: false });
+
       const $ = (id) => document.getElementById(id);
 
       const fileInput = $("fileInput");
@@ -826,7 +1297,7 @@
         img.loading = "eager";
         await new Promise((res, rej) => {
           img.onload = () => res();
-          img.onerror = () => rej(new Error("이미지를 읽을 수 없어요."));
+          img.onerror = () => rej(new Error(t("errorImageRead")));
           img.src = src;
         });
         return { src, img, w: img.naturalWidth, h: img.naturalHeight };
@@ -837,12 +1308,12 @@
           (f) => f && f.type && f.type.startsWith("image/")
         );
         if (!arr.length) {
-          setStatus("이미지 파일만 넣을 수 있어요.");
+          setStatus(t("errorOnlyImages"));
           return;
         }
 
-        setStatus(`이미지 ${arr.length}장 불러오는 중...`);
-        infoStateEl.textContent = "로딩";
+        setStatus(t("statusLoadingImages", { count: arr.length }));
+        infoStateEl.textContent = t("statusLoading");
 
         for (const f of arr) {
           try {
@@ -862,8 +1333,8 @@
         }
         renderList();
         await preview(); // auto preview
-        setStatus("업로드 완료!", true);
-        infoStateEl.textContent = "대기";
+        setStatus(t("statusUploadDone"), true);
+        infoStateEl.textContent = t("stateIdle");
       }
 
       function cleanup() {
@@ -880,7 +1351,7 @@
         setStatus("");
         infoPagesEl.textContent = "-";
         infoSizeEl.textContent = "-";
-        infoStateEl.textContent = "대기";
+        infoStateEl.textContent = t("stateIdle");
       }
 
       function renderList() {
@@ -914,7 +1385,7 @@
           const del = document.createElement("button");
           del.className = "btn btn-ghost btn-sm";
           del.type = "button";
-          del.textContent = "삭제";
+          del.textContent = t("btnDelete");
           del.onclick = () => {
             items = items.filter((x) => x.id !== it.id);
             try {
@@ -1007,12 +1478,12 @@
           if (!items.length) {
             infoSizeEl.textContent = "-";
             infoPagesEl.textContent = "-";
-            infoStateEl.textContent = "대기";
+            infoStateEl.textContent = t("stateIdle");
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             return;
           }
 
-          infoStateEl.textContent = "미리보기";
+          infoStateEl.textContent = t("statusPreview");
           const outType = outTypeEl.value;
 
           if (outType === "pdf") {
@@ -1023,7 +1494,7 @@
             // Show rough size as sum of original file sizes (very rough)
             const approx = items.reduce((a, it) => a + (it.file?.size || 0), 0);
             infoSizeEl.textContent = `~${fmtBytes(approx)}`;
-            infoStateEl.textContent = "대기";
+            infoStateEl.textContent = t("stateIdle");
             // still show a merged preview canvas (first few) for UX
           } else {
             infoPagesEl.textContent = "-";
@@ -1077,11 +1548,11 @@
           } catch {
             infoSizeEl.textContent = "-";
           }
-          infoStateEl.textContent = "대기";
+          infoStateEl.textContent = t("stateIdle");
         } catch (e) {
           console.error(e);
-          setStatus("미리보기 중 오류가 발생했어요. 설정을 다시 확인해주세요.");
-          infoStateEl.textContent = "오류";
+          setStatus(t("statusPreviewError"));
+          infoStateEl.textContent = t("statusError");
         }
       }
 
@@ -1193,7 +1664,7 @@
 
       // Build outputs
       async function buildMergedImageBlob() {
-        if (!items.length) throw new Error("이미지를 먼저 추가해주세요.");
+        if (!items.length) throw new Error(t("statusNeedImages"));
 
         const layout = getLayout();
         const keepSize = keepSizeEl.checked;
@@ -1231,12 +1702,12 @@
 
         // transparency only meaningful for png
         const blob = await new Promise((res) => off.toBlob(res, mime, q));
-        if (!blob) throw new Error("이미지 생성에 실패했어요.");
+        if (!blob) throw new Error(t("errorImageCreate"));
         return blob;
       }
 
       async function buildPdfBlob() {
-        if (!items.length) throw new Error("이미지를 먼저 추가해주세요.");
+        if (!items.length) throw new Error(t("statusNeedImages"));
         const { jsPDF } = window.jspdf;
 
         const mode = getPdfMode();
@@ -1361,8 +1832,8 @@
       }
 
       async function buildZipOfConvertedImages() {
-        if (!items.length) throw new Error("이미지를 먼저 추가해주세요.");
-        if (!window.JSZip) throw new Error("ZIP 모듈 로드 실패");
+        if (!items.length) throw new Error(t("statusNeedImages"));
+        if (!window.JSZip) throw new Error(t("errorZipModule"));
 
         const zip = new JSZip();
         const mime = imgFormatEl.value;
@@ -1395,11 +1866,11 @@
       $("btnMake").addEventListener("click", async () => {
         try {
           if (!items.length) {
-            setStatus("이미지를 먼저 추가해주세요.");
+            setStatus(t("statusNeedImages"));
             return;
           }
-          infoStateEl.textContent = "생성중";
-          setStatus("만드는 중... (큰 이미지는 시간이 걸릴 수 있어요)");
+          infoStateEl.textContent = t("statusBuilding");
+          setStatus(t("statusBuildingNow"));
 
           const outType = outTypeEl.value;
 
@@ -1412,11 +1883,11 @@
                 ? "webp"
                 : "jpg";
             downloadBlob(blob, `merged.${ext}`);
-            setStatus("합친 이미지를 다운로드했어요!", true);
+            setStatus(t("statusMergedDone"), true);
           } else if (outType === "pdf") {
             const blob = await buildPdfBlob();
             downloadBlob(blob, "images.pdf");
-            setStatus("PDF 다운로드 완료!", true);
+            setStatus(t("statusPdfDone"), true);
           } else if (outType === "zip") {
             if (
               imgFormatEl.value === "image/png" ||
@@ -1425,18 +1896,18 @@
             ) {
               const blob = await buildZipOfConvertedImages();
               downloadBlob(blob, "converted_images.zip");
-              setStatus("ZIP 다운로드 완료!", true);
+              setStatus(t("statusZipDone"), true);
             } else {
-              setStatus("ZIP은 이미지 포맷(PNG/JPG/WEBP)에서만 지원해요.");
+              setStatus(t("statusZipUnsupported"));
             }
           }
 
           await preview();
         } catch (e) {
           console.error(e);
-          setStatus(e?.message || "생성 중 오류가 발생했어요.");
+          setStatus(e?.message || t("statusBuildError"));
         } finally {
-          infoStateEl.textContent = "대기";
+          infoStateEl.textContent = t("stateIdle");
         }
       });
 
@@ -1600,7 +2071,7 @@
           );
 
           if (!htmlFile) {
-            setHtmlStatus("HTML 파일을 찾을 수 없어요.");
+            setHtmlStatus(t("htmlNotFound"));
             return;
           }
 
@@ -1613,12 +2084,12 @@
             }
           });
 
-          setHtmlStatus("HTML 파일 읽는 중...");
+          setHtmlStatus(t("htmlReading"));
           let htmlText = await htmlFile.text();
 
           // 이미지 경로를 base64로 변환
           if (uploadedImageFiles.size > 0) {
-            setHtmlStatus("이미지 경로 변환 중...");
+            setHtmlStatus(t("htmlConvertingImages"));
             htmlText = await convertImagePathsToBase64(
               htmlText,
               uploadedImageFiles
@@ -1664,7 +2135,7 @@
                 htmlIframe.style.height = "400px";
               }
 
-              setHtmlStatus("HTML 파일 로드 완료!", true);
+              setHtmlStatus(t("htmlLoaded"), true);
               btnConvertHtmlToPdf.disabled = false;
             }, 200);
           };
@@ -1673,12 +2144,16 @@
           applyHtmlPreviewViewport();
           const imageCount = uploadedImageFiles.size;
           htmlFileName.textContent =
-            htmlFile.name +
-            (imageCount > 0 ? ` (이미지 ${imageCount}개 포함)` : "");
+            imageCount > 0
+              ? t("htmlFileNameWithImages", {
+                  name: htmlFile.name,
+                  count: imageCount,
+                })
+              : htmlFile.name;
           btnClearHtml.style.display = "block";
         } catch (e) {
           console.error(e);
-          setHtmlStatus("HTML 파일을 읽을 수 없어요: " + e.message);
+          setHtmlStatus(t("htmlReadFail", { message: e.message }));
         }
       }
 
@@ -1690,8 +2165,9 @@
           htmlIframe.remove();
           htmlIframe = null;
         }
-        htmlPreview.innerHTML =
-          '<div class="muted small text-center py-8">📄 HTML 파일을 업로드하면 여기에 미리보기가 표시됩니다.</div>';
+        htmlPreview.innerHTML = `<div class="muted small text-center py-8">${t(
+          "htmlPreviewEmptyHtml"
+        )}</div>`;
         htmlFileName.textContent = "";
         btnClearHtml.style.display = "none";
         btnConvertHtmlToPdf.disabled = true;
@@ -1741,16 +2217,16 @@
       async function convertHtmlFileToPdf() {
         try {
           if (!uploadedHtmlContent || !htmlIframe) {
-            setHtmlStatus("먼저 HTML 파일을 업로드해주세요.");
+            setHtmlStatus(t("htmlNeedUpload"));
             return;
           }
 
           if (!window.html2canvas || !window.jspdf) {
-            setHtmlStatus("PDF 변환 라이브러리를 불러올 수 없어요.");
+            setHtmlStatus(t("htmlLibMissing"));
             return;
           }
 
-          setHtmlStatus("이미지 로딩 중...");
+          setHtmlStatus(t("htmlLoadingImages"));
           btnConvertHtmlToPdf.disabled = true;
 
           // 캡처용 iframe 준비 (PC 폭 기본)
@@ -1786,7 +2262,7 @@
           // 추가 렌더링 대기 시간
           await new Promise((resolve) => setTimeout(resolve, 500));
 
-          setHtmlStatus("PDF 변환 중... (페이지가 길면 시간이 걸릴 수 있어요)");
+          setHtmlStatus(t("htmlConverting"));
 
           // 실제 뷰포트 크기 가져오기 (iframe 내부의 실제 렌더링 크기)
           const contentWidth = Math.max(
@@ -1893,13 +2369,12 @@
 
           // PDF 다운로드
           pdf.save(pdfFileName);
-          setHtmlStatus("PDF 다운로드 완료!", true);
+          setHtmlStatus(t("htmlPdfDone"), true);
           btnConvertHtmlToPdf.disabled = false;
         } catch (e) {
           console.error(e);
           setHtmlStatus(
-            "PDF 변환 중 오류가 발생했어요: " +
-              (e?.message || "알 수 없는 오류")
+            t("htmlPdfFail", { message: e?.message || t("unknownError") })
           );
           btnConvertHtmlToPdf.disabled = false;
         }
